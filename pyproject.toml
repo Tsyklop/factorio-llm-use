@@ -1,0 +1,29 @@
+[project]
+name = "factorio-llm-use"
+version = "0.1.0"
+description = "MCP tools and a persistent Factorio bridge for an independent AI engineer"
+requires-python = ">=3.12"
+dependencies = ["mcp>=2.2,<3"]
+
+[project.scripts]
+factorio-llm-use = "factorio_llm_use.server:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/factorio_llm_use"]
+
+[dependency-groups]
+dev = ["ruff>=0.17,<0.18"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+
+[tool.ruff.lint.per-file-ignores]
+"scripts/verify_engine.py" = ["E501"] # Embedded Lua fixture/query strings.

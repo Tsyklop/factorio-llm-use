@@ -1,0 +1,9 @@
+{
+  "name": "factorio_llm_use",
+  "version": "0.1.0",
+  "title": "Factorio LLM Use",
+  "author": "Tsyklop",
+  "factorio_version": "2.1",
+  "dependencies": ["base >= 2.1.0"],
+  "description": "Persistent MCP bridge, independent AI character, world inspection and native blueprint operations. No entity whitelist."
+}
