@@ -43,61 +43,47 @@ can be added without adding entity whitelists.
 
 ## Setup
 
-```powershell
+See the **[step-by-step guide for Windows, Linux and macOS](docs/getting-started.md)**.
+It covers installing the mod, starting a copy of your world, connecting Codex or
+another MCP client, checking the connection, and saving/resuming progress.
+
+From the repository root, build and register the tool (all platforms):
+
+```sh
 uv sync --frozen
 uv run python scripts/package_mod.py
-```
-
-Install `dist/factorio_llm_use_0.1.0.zip` in the server and client mod directories and
-enable **Factorio LLM Use**. The mod adds an empty AI character near the player
-force's spawn. It does not add starter items or unlock technologies.
-
-For a first check, the supplied Windows launcher makes an isolated copy of a save
-and the installed mod files. It starts a hidden server; it never controls the game
-window or overwrites the source save. All session files are kept under `.runtime/`.
-
-```powershell
-./scripts/start-server.ps1 -FactorioExe 'D:\path\Factorio.exe' -Save 'D:\saves\world.zip'
-```
-
-The game port defaults to `34199` and RCON to `27075`. The launcher creates a random
-password in `.runtime/rcon-password.txt`. It refuses to overwrite an existing
-session save. The server runs while humans are disconnected; current AI movement
-stops after ten seconds without controller requests. Keep session saves/autosaves
-when stopping or replacing a session.
-
-Configure the MCP client with a standard stdio server:
-
-```json
-{
-  "mcpServers": {
-    "factorio": {
-      "command": "powershell.exe",
-      "args": ["-NoProfile", "-File", "D:\\path\\factorio-llm-use\\scripts\\start-mcp.ps1"]
-    }
-  }
-}
-```
-
-For the Codex desktop app/CLI, register the current virtual environment directly:
-
-```powershell
 uv run python scripts/register_mcp.py
 ```
 
-This creates only the `factorio-llm-use` MCP entry. The password remains in the
-ignored local file. Restart the MCP connection or open a new session if the client
-has not refreshed its tool catalog. Registration does not launch or select a world.
+Start a copied world on Windows (PowerShell):
+
+```powershell
+.\scripts\start-server.ps1 -FactorioExe 'D:\path\Factorio.exe' -Save 'D:\saves\world.zip'
+```
+
+Or on Linux/macOS (leave the server terminal open):
+
+```sh
+uv run python scripts/start_server.py \
+  --factorio '/path/to/factorio/bin/x64/factorio' \
+  --save "$HOME/.factorio/saves/world.zip" --mods "$HOME/.factorio/mods"
+```
+
+The guide supplies macOS bundle paths and each platform's stop/resume commands.
+The game port defaults to `34199` and RCON to `27075`; the random password is kept
+in `.runtime/rcon-password.txt`. The original save stays unchanged. Current progress
+lives under `.runtime/data/saves/`; use `-Resume` or `--resume` on later starts.
+The server keeps simulating while human clients are disconnected.
+
+Enable **Factorio LLM Use** in any joining client's mods. The mod creates an empty
+AI character and does not add starter items or unlock technologies. Refresh the
+MCP connection or open a new session to discover its tools. Registration alone
+does not launch Factorio or assign work.
 
 For an existing server, set `FACTORIO_RCON_PASSWORD` or
 `FACTORIO_RCON_PASSWORD_FILE`, plus `FACTORIO_RCON_PORT` and optionally
 `FACTORIO_RCON_HOST`, then run `uv run factorio-llm-use`. Credentials are read from
 the environment or a local file, not stored in the repository or the MCP tool schemas.
-
-To stop the supplied session, `./scripts/stop-server.ps1` completes and verifies a
-new native save before terminating the recorded project server. Resume with
-`./scripts/start-server.ps1 -FactorioExe 'D:\path\Factorio.exe' -Resume`; the most
-recent session save is selected. These scripts do not stop unrelated game processes.
 
 ## Assigning work
 

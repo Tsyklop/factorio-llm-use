@@ -2,7 +2,7 @@
 
 ## Local results, 2026-11-04
 
-- Python: 10 tests passed on Python 3.12.13 and Python 3.14.6.
+- Core Python: 10 tests passed on Python 3.12.13 and Python 3.14.6.
 - Real engine: 30 checks passed on Factorio 2.1.24, Windows, Space Age enabled,
   with an isolated copy of an existing world and its local mod collection.
 - The engine suite drives the actual stdio MCP server and reads action outcomes
@@ -11,6 +11,15 @@
   authenticated the exact registered Codex MCP command using its password file,
   enumerated 29 tools, saved/stopped the session, and resumed the latest native save
   with the same AI identity. The bootstrap session was then saved and stopped.
+- Setup guide: the expanded suite has 18 tests. On Windows/Python 3.14.6,
+  17 passed and the Unix-only process test was skipped. Preparation tests inspect
+  the copied files and generated configuration, preserved source hashes,
+  overwrite protection, latest-save selection, mod-snapshot reuse, occupied-port
+  handling and macOS data-directory discovery.
+- An additional real Windows engine smoke check consumed the Python launcher's
+  generated configuration and packaged mod, authenticated RCON, completed and
+  verified a native save, then resumed it with the same AI identity. Source save
+  and mod-file hashes remained unchanged. The test server was stopped afterward.
 
 The 30 engine checks cover:
 
@@ -76,5 +85,8 @@ blueprint placement; they do not by themselves certify throughput, signaling des
 or deadlock freedom of an arbitrary proposed network.
 
 The source-mod engine suite is distinct from launcher/ZIP checks. Hosted CI runs
-Python checks and packaging on Windows and Linux; it does not run the proprietary
-game binary. A passed local engine suite must not be reported as a hosted engine run.
+Python checks and packaging on Windows, Linux and macOS; it does not run the
+proprietary game binary. The Unix process test launches a small fixture executable
+that consumes the generated configuration, not Factorio. Linux/macOS gameplay and
+native game shutdown on those platforms have not been verified. A passed local
+engine suite must not be reported as a hosted engine run.
