@@ -7,6 +7,9 @@ character, independent of connected human players.
 The tool is built first. It does not start a factory project or change a working
 world merely because it is installed. The human assigns the tasks and their scope.
 
+Get the companion mod from the **[Factorio Mod Portal](https://mods.factorio.com/mod/factorio_llm_use)**.
+It requires the external MCP server from this repository; follow the setup guide below.
+
 ## Capabilities
 
 - Inspect surfaces, entities, inventories, fluids, recipes, research, rail connections

@@ -52,6 +52,11 @@ menu. This is the starting snapshot; subsequent server progress is stored separa
 Install the mod in your client if you want to join the server. The launchers install
 it into the server's copied mod directory automatically.
 
+You can install **Factorio LLM Use** through the in-game mod manager or download
+it from the [Mod Portal](https://mods.factorio.com/mod/factorio_llm_use). The commands
+below install the ZIP built from this checkout as an alternative. Keep the client
+and server on the same mod version.
+
 ### Windows
 
 ```powershell
