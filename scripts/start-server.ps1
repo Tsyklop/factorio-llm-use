@@ -26,7 +26,7 @@ Get-ChildItem -LiteralPath $SourceMods -File | Copy-Item -Destination $modRoot
 $python = Join-Path $projectRoot '.venv\Scripts\python.exe'
 if (-not (Test-Path -LiteralPath $python)) { throw 'Run uv sync first.' }
 & $python (Join-Path $PSScriptRoot 'package_mod.py') | Out-Null
-Copy-Item -LiteralPath (Join-Path $projectRoot 'dist\factorio_llm_use_0.1.0.zip') -Destination $modRoot
+Copy-Item -LiteralPath (Join-Path $projectRoot 'dist\factorio_llm_use_0.1.1.zip') -Destination $modRoot
 $modListPath = Join-Path $modRoot 'mod-list.json'
 $modList = Get-Content -LiteralPath $modListPath -Raw | ConvertFrom-Json
 $modList.mods = @($modList.mods | Where-Object { $_.name -ne 'factorio_llm_use' }) + @(@{name='factorio_llm_use';enabled=$true})

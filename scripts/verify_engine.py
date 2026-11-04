@@ -46,7 +46,7 @@ class McpClient:
             {
                 "protocolVersion": "2025-06-18",
                 "capabilities": {},
-                "clientInfo": {"name": "factorio-llm-use-engine-check", "version": "0.1.0"},
+                "clientInfo": {"name": "factorio-llm-use-engine-check", "version": "0.1.1"},
             },
         )
         self._send({"jsonrpc": "2.0", "method": "notifications/initialized"})
@@ -103,7 +103,7 @@ def run(args):
     for source in Path(args.mods).iterdir():
         if source.is_file():
             shutil.copy2(source, root / "mods" / source.name)
-    shutil.copytree(PROJECT / "mod/factorio_llm_use_0.1.0", root / "mods/factorio_llm_use_0.1.0")
+    shutil.copytree(PROJECT / "mod/factorio_llm_use_0.1.1", root / "mods/factorio_llm_use_0.1.1")
     mods = json.loads((root / "mods/mod-list.json").read_text(encoding="utf-8-sig"))
     mods["mods"] = [m for m in mods["mods"] if m["name"] != "factorio_llm_use"]
     mods["mods"].append({"name": "factorio_llm_use", "enabled": True})

@@ -20,6 +20,11 @@
   generated configuration and packaged mod, authenticated RCON, completed and
   verified a native save, then resumed it with the same AI identity. Source save
   and mod-file hashes remained unchanged. The test server was stopped afterward.
+- The 0.1.1 artwork release passed archive integrity and image checks. Its gameplay
+  Lua matches 0.1.0 except for the reported version string. A real Windows engine
+  check loaded a copy of a 0.1.0 session with the new packaged mod, confirmed one
+  AI character, saved it, and resumed with the same AI identity. No gameplay
+  assignment was performed; the isolated test server was stopped afterward.
 
 The 30 engine checks cover:
 

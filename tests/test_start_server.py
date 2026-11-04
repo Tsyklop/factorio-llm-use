@@ -35,7 +35,7 @@ class SessionPreparationTests(unittest.TestCase):
         self.project = self.root / "project"
         (self.project / "dist").mkdir(parents=True)
         with zipfile.ZipFile(self.project / "dist" / MOD_FILE, "w") as archive:
-            archive.writestr("factorio_llm_use_0.1.0/info.json", "{}")
+            archive.writestr("factorio_llm_use_0.1.1/info.json", "{}")
         self.executable = self.root / "install/bin/x64/factorio"
         self.executable.parent.mkdir(parents=True)
         self.executable.write_text("fixture executable", encoding="utf-8")

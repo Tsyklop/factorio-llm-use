@@ -10,7 +10,7 @@ from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 MOD_NAME = "factorio_llm_use"
-MOD_FILE = MOD_NAME + "_0.1.0.zip"
+MOD_FILE = MOD_NAME + "_0.1.1.zip"
 
 
 def parser(project_root: Path) -> argparse.ArgumentParser:

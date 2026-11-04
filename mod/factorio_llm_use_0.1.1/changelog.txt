@@ -1,0 +1,5 @@
+---------------------------------------------------------------------------------------------------
+Version: 0.1.1
+Date: 2026-11-04
+  Graphics:
+    - Added an AI engineer thumbnail for the mod portal and in-game mod browser.

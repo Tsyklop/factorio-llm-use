@@ -1,6 +1,6 @@
 [project]
 name = "factorio-llm-use"
-version = "0.1.0"
+version = "0.1.1"
 description = "MCP tools and a persistent Factorio bridge for an independent AI engineer"
 requires-python = ">=3.12"
 dependencies = ["mcp>=2.2,<3"]

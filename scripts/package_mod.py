@@ -6,7 +6,7 @@ from pathlib import Path
 
 def package(destination: Path | None = None) -> Path:
     root = Path(__file__).resolve().parents[1]
-    source = root / "mod/factorio_llm_use_0.1.0"
+    source = root / "mod/factorio_llm_use_0.1.1"
     destination = destination or root / "dist"
     destination.mkdir(parents=True, exist_ok=True)
     archive = destination / f"{source.name}.zip"

@@ -13,7 +13,7 @@ for _, group in ipairs({agent.operations, world.operations, blueprints.operation
 end
 operations.ping = function(s)
   s.heartbeat = game.tick
-  return {version = "0.1.0", factorio_version = script.active_mods.base,
+  return {version = "0.1.1", factorio_version = script.active_mods.base,
           connected_players = #game.connected_players, capabilities = operations.help(s)}
 end
 operations.help = function()

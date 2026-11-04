@@ -42,7 +42,7 @@ uv sync --frozen
 uv run python scripts/package_mod.py
 ```
 
-The mod ZIP is `dist/factorio_llm_use_0.1.0.zip`. Leave it zipped.
+The mod ZIP is `dist/factorio_llm_use_0.1.1.zip`. Leave it zipped.
 
 ## 2. Prepare your world and human client
 
@@ -60,7 +60,7 @@ and server on the same mod version.
 ### Windows
 
 ```powershell
-Copy-Item -LiteralPath ".\dist\factorio_llm_use_0.1.0.zip" `
+Copy-Item -LiteralPath ".\dist\factorio_llm_use_0.1.1.zip" `
   -Destination "$env:APPDATA\Factorio\mods\"
 ```
 
@@ -69,7 +69,7 @@ Copy-Item -LiteralPath ".\dist\factorio_llm_use_0.1.0.zip" `
 ```sh
 FACTORIO_USER="$HOME/.factorio"
 mkdir -p "$FACTORIO_USER/mods"
-cp dist/factorio_llm_use_0.1.0.zip "$FACTORIO_USER/mods/"
+cp dist/factorio_llm_use_0.1.1.zip "$FACTORIO_USER/mods/"
 ```
 
 ### macOS
@@ -77,7 +77,7 @@ cp dist/factorio_llm_use_0.1.0.zip "$FACTORIO_USER/mods/"
 ```sh
 FACTORIO_USER="$HOME/Library/Application Support/factorio"
 mkdir -p "$FACTORIO_USER/mods"
-cp dist/factorio_llm_use_0.1.0.zip "$FACTORIO_USER/mods/"
+cp dist/factorio_llm_use_0.1.1.zip "$FACTORIO_USER/mods/"
 ```
 
 These are the [standard user-data locations](https://wiki.factorio.com/Application_directory).

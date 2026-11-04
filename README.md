@@ -1,5 +1,7 @@
 # Factorio LLM Use
 
+<img src="mod/factorio_llm_use_0.1.1/thumbnail.png" alt="AI engineer inside a steel gear" width="144" height="144">
+
 A general Factorio 2.1 toolset for an LLM assistant, using MCP, local RCON and a
 persistent game mod. It operates without desktop input and creates its own AI
 character, independent of connected human players.
