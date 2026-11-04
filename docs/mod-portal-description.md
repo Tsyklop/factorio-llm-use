@@ -7,9 +7,6 @@ blueprint operations and train tools without desktop mouse or keyboard control.
 **This mod requires the external Factorio LLM Use MCP server and an MCP client.**
 The Python server connects to a locally hosted Factorio server through RCON.
 
-The MCP server repository is currently private; access is required to use the
-linked setup guide.
-
 - [Installation and usage for Windows, Linux and macOS](https://github.com/Tsyklop/factorio-llm-use/blob/main/docs/getting-started.md)
 - [Source code and MCP server](https://github.com/Tsyklop/factorio-llm-use)
 
