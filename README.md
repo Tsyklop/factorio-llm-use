@@ -85,6 +85,16 @@ AI character and does not add starter items or unlock technologies. Refresh the
 MCP connection or open a new session to discover its tools. Registration alone
 does not launch Factorio or assign work.
 
+If the AI dies, Factorio keeps its native corpse and items. An empty replacement
+appears near the player force's spawn on Nauvis after 300 game ticks (five seconds
+at normal speed). Pausing the simulation pauses this timer. Interrupted actions
+fail rather than resuming on the new character. Blocked spawn positions are retried
+every 60 ticks. Saved pending timers and old saves with a dead AI recover normally.
+The `respawn_agent` MCP tool also recovers a dead or missing AI immediately; calling
+it on a living AI does nothing. It never restores or grants items.
+
+The isolated respawn regression runner is documented in [verification](docs/verification.md).
+
 For an existing server, set `FACTORIO_RCON_PASSWORD` or
 `FACTORIO_RCON_PASSWORD_FILE`, plus `FACTORIO_RCON_PORT` and optionally
 `FACTORIO_RCON_HOST`, then run `uv run factorio-llm-use`. Credentials are read from

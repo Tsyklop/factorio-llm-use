@@ -41,6 +41,15 @@ def create_server(bridge: Bridge) -> MCPServer:
         return await invoke("agent_status")
 
     @server.tool()
+    async def respawn_agent() -> str:
+        """Recover a dead or missing AI at the player force spawn with an empty inventory.
+
+        Leaves corpses and their items untouched. An already living AI is unchanged.
+        Death also triggers automatic recovery after 300 game ticks.
+        """
+        return await invoke("respawn_agent")
+
+    @server.tool()
     async def observe(
         surface: str = "nauvis",
         area: dict[str, Any] | None = None,

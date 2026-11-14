@@ -95,3 +95,26 @@ proprietary game binary. The Unix process test launches a small fixture executab
 that consumes the generated configuration, not Factorio. Linux/macOS gameplay and
 native game shutdown on those platforms have not been verified. A passed local
 engine suite must not be reported as a hosted engine run.
+## Respawn regression coverage
+
+`scripts/verify_respawn_offline.py` launches disposable engine copies under
+`.runtime/`, on a separate loopback game port, with credentials and live servers
+untouched. It needs no RCON connection. Supply a save copy and an original mod ZIP:
+
+```powershell
+$env:PYTHONPATH = "$PWD\src"
+.\.venv\Scripts\python.exe scripts\verify_respawn_offline.py --factorio 'PATH-TO-FACTORIO' --save 'PATH-TO-SAVE-COPY.zip' --old-mod 'PATH-TO-ORIGINAL-MOD.zip'
+```
+
+It first loads the original companion mod, saves an authentic dead-agent state,
+then loads the modified companion mod. The test-only observer verifies delayed
+respawn, corpse items, current force spawn, interrupted actions, manual recovery,
+native walking, missing-entity fallback, blocked-spawn retry, and persistence of
+a partially elapsed timer through an actual save/load. It compares the input
+save's SHA-256 hash before and after. Fixtures grant items, clear terrain and
+alter spawn points only in the disposable worlds; they are not packaged in the
+distributed mod. Only engine children created by the runner are terminated.
+
+This runner is distinct from Python boundary tests, hosted CI and verification
+through a user's live MCP connection. Its JSON results and logs stay under
+`.runtime/` and must not be committed.

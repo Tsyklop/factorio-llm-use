@@ -30,6 +30,16 @@ Movement and shooting are applied by game ticks, while the MCP client polls acti
 state. A missing heartbeat cancels movement and mining, and returns unconsumed
 crafting ingredients. Combat tactics and reliable automatic retreat are not claimed.
 
+The single current character lives in `storage.llm.agent`. `on_entity_died` clears
+that reference, fails the active action and stores a deadline 300 ticks ahead.
+The persistent tick handler creates an empty character at the player force spawn
+on Nauvis (or the first surface if Nauvis is absent), replacing the shared reference.
+It never edits the dead character's loot or corpse. A missing/invalid character in
+an old save also starts recovery, and blocked spawns retry after 60 ticks. Pending
+deadlines survive save/load. `respawn_agent` permits immediate manual recovery and
+is a no-op when the character is already alive. Tools resolve the shared reference
+at call time; path results for interrupted actions cannot resume on the new AI.
+
 Retries retain the same request ID. The mod stores the most recent 512 responses
 in save state, so a lost response can be retried without repeating an operation
 within that retention window. Results outside the window are not an exactly-once

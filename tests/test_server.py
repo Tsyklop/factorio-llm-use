@@ -17,6 +17,15 @@ class BoundaryBridge:
 
 
 class ServerTests(unittest.IsolatedAsyncioTestCase):
+    async def test_respawn_recovery_is_available_without_character_parameters(self):
+        server = create_server(BoundaryBridge())
+        tools = await server.list_tools()
+        tool = next(t for t in tools if t.name == "respawn_agent")
+        self.assertFalse(tool.input_schema.get("required"))
+        result = await server.call_tool("respawn_agent", {})
+        response = json.loads(result.content[0].text)
+        self.assertEqual(response["result"]["operation"], "respawn_agent")
+
     async def test_tool_schema_requires_explicit_ghost_mode(self):
         tools = await create_server(BoundaryBridge()).list_tools()
         tool = next(t for t in tools if t.name == "apply_plan")

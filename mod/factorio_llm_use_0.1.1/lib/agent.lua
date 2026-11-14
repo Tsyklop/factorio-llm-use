@@ -1,13 +1,20 @@
 local world = require("lib.world")
 local M = {operations = {}}
 
+local RESPAWN_DELAY = 5 * 60
+local RESPAWN_RETRY = 60
+
+local function is_alive(s)
+  return s.agent and s.agent.valid and s.agent.health > 0
+end
+
 local function alive(s)
-  assert(s.agent and s.agent.valid and s.agent.health > 0, "AI character is absent or dead")
+  assert(is_alive(s), "AI character is absent or dead; waiting for respawn or use respawn_agent")
   return s.agent
 end
 
 local function stop(s, status, detail)
-  if s.agent and s.agent.valid then
+  if is_alive(s) then
     s.agent.walking_state = {walking = false, direction = defines.direction.north}
     s.agent.mining_state = {mining = false}
     s.agent.shooting_state = {state = defines.shooting.not_shooting, position = s.agent.position}
@@ -20,16 +27,61 @@ local function stop(s, status, detail)
   end
 end
 
-function M.initialize(s)
-  if s.spawned then return end
+local function spawn(s)
   local surface = game.surfaces.nauvis or game.surfaces[1]
   local force = game.forces.player
+  if not surface or not force then return nil, "Player force or spawn surface is unavailable" end
   local pos = surface.find_non_colliding_position("character", force.get_spawn_position(surface), 32, 0.5)
-  assert(pos, "No free space for the AI character near spawn")
+  if not pos then return nil, "No free space for the AI character near spawn" end
   local character = surface.create_entity{name = "character", position = pos, force = force}
-  assert(character, "Could not create AI character")
+  if not character then return nil, "Could not create AI character" end
   character.name_tag = "LLM engineer"
   s.agent, s.spawned = character, true
+  s.respawn_tick, s.respawn_error = nil, nil
+  return character
+end
+
+local function schedule_respawn(s)
+  stop(s, "failed", "Character died")
+  -- Do not touch inventories, corpses, loot or player controllers. All callers
+  -- resolve this shared reference again after the empty replacement is created.
+  s.agent = nil
+  s.respawn_tick = s.respawn_tick or (game.tick + RESPAWN_DELAY)
+end
+
+function M.entity_died(s, event)
+  if event.entity == s.agent then schedule_respawn(s) end
+end
+
+function M.initialize(s)
+  if is_alive(s) then
+    s.spawned = true
+    s.respawn_tick, s.respawn_error = nil, nil
+  elseif s.spawned or s.respawn_tick then
+    -- Existing saves can contain spawned=true with an invalid character.
+    schedule_respawn(s)
+  else
+    local character, err = spawn(s)
+    if not character then
+      s.spawned, s.respawn_error = true, err
+      s.respawn_tick = game.tick + RESPAWN_RETRY
+    end
+  end
+end
+
+M.operations.respawn_agent = function(s)
+  if is_alive(s) then
+    return {respawned = false, unit_number = s.agent.unit_number,
+            surface = s.agent.surface.name, position = s.agent.position}
+  end
+  schedule_respawn(s)
+  local character, err = spawn(s)
+  if not character then
+    s.respawn_error, s.respawn_tick = err, game.tick + RESPAWN_RETRY
+    error(err .. "; automatic retry in 60 game ticks")
+  end
+  return {respawned = true, unit_number = character.unit_number,
+          surface = character.surface.name, position = character.position}
 end
 
 local function distance(a, b)
@@ -221,10 +273,19 @@ M.operations.shoot_at = function(s, p)
 end
 
 function M.tick(s)
-  if not s.spawned then M.initialize(s) end
+  if not s.spawned and not s.respawn_tick then M.initialize(s) end
+  if not is_alive(s) then
+    schedule_respawn(s)
+    if game.tick >= s.respawn_tick then
+      local character, err = spawn(s)
+      if not character then
+        s.respawn_error, s.respawn_tick = err, game.tick + RESPAWN_RETRY
+      end
+    end
+    return
+  end
   local action = s.action
   if not action then return end
-  if not s.agent or not s.agent.valid or s.agent.health <= 0 then stop(s, "failed", "Character died") return end
   local a = s.agent
   if game.tick - (s.heartbeat or action.started_tick) > 600 then
     if action.type == "craft" then M.operations.cancel_action(s) end
